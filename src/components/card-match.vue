@@ -5,7 +5,10 @@
         <p>{{ game.roundName }} {{ game.roundNum }}</p>
         <p>{{ formatTime(game.startTime) }}</p>
       </div>
-      <p class="game-time">{{ game.gameTimeDisplayToShow }}</p>
+      <p class="game-time">
+        {{ game.gameTimeDisplayToShow }}
+        <span class="game-time-minute">'</span>
+      </p>
       <div class="game-content">
         {{ game.symbolicHomeTeam }}
         <img 
@@ -14,9 +17,9 @@
           :src="game.homeTeamImage" 
           :alt="game.homeCompetitor?.name || 'Time da casa desconhecido'" 
         />
-        <h1>{{ game.homeScore }}</h1>
-        <h1 style="font-size: 24px;">X</h1>
-        <h1>{{ game.awayScore }}</h1>
+        <h1 class="game-content-score">{{ game.homeScore }}</h1>
+        <h1 class="game-content-score">X</h1>
+        <h1 class="game-content-score">{{ game.awayScore }}</h1>
         <img 
           v-if="game.awayTeamImage" 
           class="game-shield" 
@@ -130,7 +133,6 @@ export default {
   width: 40px;
   height: 40px;
   margin-right: .5em;
-  padding: 0 0 2em 0;
 }
 
 .game-status {
@@ -154,8 +156,14 @@ export default {
 .game-content {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-evenly;
+  padding: 0 0 2em 0;
+}
+
+.game-content-score {
+  font-size: 1.7em;
 }
 
 .game-footer {
@@ -186,5 +194,24 @@ export default {
 .red-card {
   width: 20px;
   height: 20px;
+}
+
+.game-time-minute {
+  font-size: 1.2em;
+  color: #b60000;
+  animation: blink 1s infinite;
+  transform: translateY(-0.2em);
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>

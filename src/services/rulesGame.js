@@ -1,5 +1,5 @@
 export function rulesGame(game) {
-    let gameTimeDisplayToShow = game.gameTimeDisplay;
+    let gameTimeDisplayToShow = game.gameTime;
   
     // Se o jogo está no Intervalo, oculta o tempo
     if (game.statusText === 'Intervalo') {
@@ -13,7 +13,7 @@ export function rulesGame(game) {
   
     // Se o jogo está no Segundo Tempo
     if (game.statusText === 'Segundo Tempo') {
-      gameTimeDisplayToShow = `${game.gameTimeDisplay}`;
+      gameTimeDisplayToShow = `${game.gameTime}`;
     }
   
     const redCardElementHome = game.redCardHome > 0 

@@ -17,23 +17,15 @@
     <hr class="division">
   </main>
   <footer>
-      <div class="footer-container-social">
-        <icon-footer @click="openURL('https://www.linkedin.com/in/lucasalvesoliveira2042')">
-          <Linkedin />
-        </icon-footer>
-        <icon-footer @click="openURL('https://github.com/loliveira1945')">
-          <Github />
-        </icon-footer>
-      </div>
-      <p>Todos os direitos reservados © e desenvolvido por Lucas Alves Oliveira.</p>
+      <p>Todos os direitos reservados © e desenvolvido por 
+        <a class="footer-dev" href="https://www.linkedin.com/in/lucasalvesoliveira2042" target="_blank">Lucas Alves Oliveira</a>.
+      </p>
   </footer>
 </template>
 
 <script>
 import cardMatch from './components/card-match.vue';
 import buttonContainer from './components/button-container.vue';
-import iconFooter from './components/icon-footer.vue'
-import { Linkedin, Github } from 'lucide-vue-next';
 
 export default {
   name: 'App',
@@ -47,9 +39,6 @@ export default {
   components: {
     cardMatch,
     buttonContainer,
-    iconFooter,
-    Linkedin,
-    Github
   }
 }
 </script>
@@ -94,12 +83,7 @@ export default {
   flex-wrap: wrap;
 }
 
-.footer-container-social {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 1.2em 0;
+.footer-dev {
+  color: #b60000;
 }
 </style>

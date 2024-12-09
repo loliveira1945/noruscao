@@ -5,6 +5,8 @@ export async function fetchGame() {
       const response = await fetch(API_URL);
       const data = await response.json();
 
+      console.log(data.games[1].gameTime)
+
       if (data.games && data.games[1]) {
         const game = data.games[1];
         return {
@@ -24,7 +26,7 @@ export async function fetchGame() {
                       : '0',
           startTime: game.startTime,
           statusText: game.statusText || "Status não disponível",
-          gameTimeDisplay: game.gameTimeDisplay || "",
+          gameTime: game.gameTime || "",
           venue: game.venue?.name || "Local não disponível",
           roundName: game.roundName,
           roundNum: game.roundNum,
