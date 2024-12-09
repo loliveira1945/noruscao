@@ -1,21 +1,12 @@
 export function rulesGame(game) {
     let gameTimeDisplayToShow = game.gameTime;
-  
-    // Se o jogo está no Intervalo, oculta o tempo
-    if (game.statusText === 'Intervalo') {
-      gameTimeDisplayToShow = '';
+
+    if (['Programação', 'Intervalo', 'Fim'].includes(game.statusText)) {
+      gameTimeDisplayToShow = '';  // Remove o tempo
+    } else if (game.statusText === 'Segundo Tempo') {
+      gameTimeDisplayToShow = `${game.gameTime}`; // Exibe o tempo
     }
-  
-    // Se o jogo acabou, não precisa continuar a contagem do tempo
-    if (game.statusText === 'Fim') {
-      gameTimeDisplayToShow = '';
-    }
-  
-    // Se o jogo está no Segundo Tempo
-    if (game.statusText === 'Segundo Tempo') {
-      gameTimeDisplayToShow = `${game.gameTime}`;
-    }
-  
+
     const redCardElementHome = game.redCardHome > 0 
       ? Array.from({ length: game.redCardHome }, () => '<img class="red-card" src="./img/red-card.921f57cc.png">').join('') 
       : '';

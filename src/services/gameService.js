@@ -5,8 +5,6 @@ export async function fetchGame() {
       const response = await fetch(API_URL);
       const data = await response.json();
 
-      console.log(data.games[1].gameTime)
-
       if (data.games && data.games[1]) {
         const game = data.games[1];
         return {

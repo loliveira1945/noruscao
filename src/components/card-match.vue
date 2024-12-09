@@ -7,7 +7,7 @@
       </div>
       <p class="game-time">
         {{ game.gameTimeDisplayToShow }}
-        <span class="game-time-minute">'</span>
+        <span class="game-time-minute" v-if="game.gameTimeDisplayToShow">'</span>
       </p>
       <div class="game-content">
         {{ game.symbolicHomeTeam }}
