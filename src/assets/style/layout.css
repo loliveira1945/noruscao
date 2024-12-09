@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    padding: 0 1em;
+    text-align: center;
+}
+  
