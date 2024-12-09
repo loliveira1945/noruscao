@@ -105,6 +105,8 @@ export default {
 }
 
 .game-time {
+  display: flex;
+  justify-content: center;
   font-size: 1.2em;
   font-weight: bold;
   color: #b60000;
