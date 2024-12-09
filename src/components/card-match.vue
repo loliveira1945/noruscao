@@ -7,12 +7,22 @@
       </div>
       <p class="game-time">{{ game.gameTimeDisplayToShow }}</p>
       <div class="game-content">
-        {{ game.symbolicHomeTeam }}        
-        <img v-if="game.homeTeamImage" class="game-shield" :src="game.homeTeamImage" :alt="game.homeCompetitor?.name || 'Time da casa desconhecido'" />
+        {{ game.symbolicHomeTeam }}
+        <img 
+          v-if="game.homeTeamImage" 
+          class="game-shield" 
+          :src="game.homeTeamImage" 
+          :alt="game.homeCompetitor?.name || 'Time da casa desconhecido'" 
+        />
         <h1>{{ game.homeScore }}</h1>
         <h1 style="font-size: 24px;">X</h1>
         <h1>{{ game.awayScore }}</h1>
-        <img v-if="game.awayTeamImage" class="game-shield" :src="game.awayTeamImage" :alt="game.awayCompetitor?.name || 'Time visitante desconhecido'" />
+        <img 
+          v-if="game.awayTeamImage" 
+          class="game-shield" 
+          :src="game.awayTeamImage" 
+          :alt="game.awayCompetitor?.name || 'Time visitante desconhecido'" 
+        />
         {{ game.symbolicAwayTeam }}
       </div>
       <div class="game-footer">
@@ -33,23 +43,22 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { fetchGame } from "@/services/gameService";
-import { rulesGame } from "@/services/rulesGame"; // Importa a função de regras
+import { rulesGame } from "@/services/rulesGame";
 import { formatTime } from "@/services/timeFormatter";
 
 export default {
   name: "CardMatch",
-
   setup() {
     const game = ref(null);
+    let interval = null;
 
     const updateGame = async () => {
       try {
         const fetchedGame = await fetchGame();
         if (fetchedGame) {
-          const processedGame = rulesGame(fetchedGame); // Aplica as regras do jogo
-
+          const processedGame = rulesGame(fetchedGame);
           game.value = {
             ...processedGame,
             homeTeamImage: `https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_3,d_Competitors:default1.png/v1/Competitors/${fetchedGame.idHome}`,
@@ -64,12 +73,16 @@ export default {
       }
     };
 
-    return { game, updateGame, formatTime };
-  },
+    onMounted(() => {
+      updateGame();
+      interval = setInterval(updateGame, 30000);
+    });
 
-  mounted() {
-    this.updateGame();
-    setInterval(this.updateGame, 30000);
+    onUnmounted(() => {
+      clearInterval(interval);
+    });
+
+    return { game, updateGame, formatTime };
   },
 };
 </script>
