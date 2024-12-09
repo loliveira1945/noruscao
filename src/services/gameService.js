@@ -12,8 +12,6 @@ export async function fetchGame() {
           idAway: game.awayCompetitor.id,
           homeTeam: game.homeCompetitor?.name || "Time da casa desconhecido",
           awayTeam: game.awayCompetitor?.name || "Time visitante desconhecido",
-          // homeScore: game.homeCompetitor?.score ?? "0",
-          // awayScore: game.awayCompetitor?.score ?? "0",
           homeScore: game.homeCompetitor && game.homeCompetitor.score !== undefined
                       ? (game.homeCompetitor.score === -1 
                       ? '' 
