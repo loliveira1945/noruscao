@@ -1,7 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
-  server: {
+  devServer: {
     proxy: {
       '/api': {
         target: 'https://webwidgets.365scores.com',
