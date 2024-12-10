@@ -1,7 +1,7 @@
 export function rulesGame(game) {
     let gameTimeDisplayToShow = game.gameTime;
 
-    if (['Programação', 'Intervalo', 'Fim'].includes(game.statusText)) {
+    if (['Programação', 'Intervalo', 'Fim', 'Recém-finalizado'].includes(game.statusText)) {
       gameTimeDisplayToShow = '';  // Remove o tempo
     } else if (game.statusText === 'Segundo Tempo') {
       gameTimeDisplayToShow = `${game.gameTime}`; // Exibe o tempo
