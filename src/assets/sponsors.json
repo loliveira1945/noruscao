@@ -1,0 +1,16 @@
+[
+    { "nome": "Kappa Brasil", "logo": "images/kappa.jpg" },
+    { "nome": "Unimed Bauru", "logo": "images/unimed-bauru.jpg" },
+    { "nome": "Nutrisaude", "logo": "images/nutrisaude.jpg" },
+    { "nome": "Ecovita", "logo": "images/ecovita.jpg" },
+    { "nome": "JNG", "logo": "images/jng.jpg" },
+    { "nome": "Maestria", "logo": "images/maestria.jpg" },
+    { "nome": "Pegoraro", "logo": "images/pegoraro.jpg" },
+    { "nome": "Picinin", "logo": "images/picinin.jpg" },
+    { "nome": "Rede LK", "logo": "images/rede-lk.jpg" },
+    { "nome": "Tributtax", "logo": "images/tributtax.jpg" },
+    { "nome": "Tudor", "logo": "images/tudor.jpg" },
+    { "nome": "Vero Internet", "logo": "images/vero-internet.jpg" },
+    { "nome": "A Medicinal", "logo": "images/a-medicinal.jpg" }
+  ]
+  
