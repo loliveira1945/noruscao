@@ -1,5 +1,5 @@
 export async function fetchGame() {
-    const API_URL = "https://webwidgets.365scores.com/web/games/current/?appTypeId=8&langId=31&timezoneName=America/Sao_Paulo&competitors=888&includeTopBettingOpportunity=1";//1222 //1270
+    const API_URL = "https://webwidgets.365scores.com/web/games/current/?appTypeId=8&langId=31&timezoneName=America/Sao_Paulo&competitors=1001&includeTopBettingOpportunity=1";//1222 //1270
   
     try {
       const response = await fetch(API_URL);

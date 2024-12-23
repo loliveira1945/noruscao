@@ -41,19 +41,21 @@
         <pre>{{ player.value }}</pre>
         <div class="game-info-header">
           <div v-if="player?.playerDetailsHome.length">
-            <div v-for="(playerDetailHome, index) in player.playerDetailsHome" :key="index">
+            <div v-for="(playerDetailHome, index) in player.playerDetailsHome" :key="index" class="game-goal-home">
+              <font-awesome-icon :icon="['far', 'futbol']" class="game-item-goal"/>
               {{ playerDetailHome.playerNameHome }} - {{ playerDetailHome.gameTimeHome }}'
             </div>
           </div>
           <div v-if="player?.playerDetailsAway.length">
-            <div v-for="(playerDetailAway, index) in player.playerDetailsAway" :key="index">
+            <div v-for="(playerDetailAway, index) in player.playerDetailsAway" :key="index" class="game-goal-away">
+              <font-awesome-icon :icon="['far', 'futbol']" class="game-item-goal"/>
               {{ playerDetailAway.playerNameAway }} - {{ playerDetailAway.gameTimeAway }}'
             </div>
           </div>
         </div>
         <div class="game-info-footer">
-          <div class="game-item-left red-card" v-html="game.redCardElementHome"></div>
-          <div class="game-item-right red-card" v-html="game.redCardElementAway"></div>
+          <div class="game-item-left game-item-red-card" v-html="game.redCardElementHome"></div>
+          <div class="game-item-right game-item-red-card" v-html="game.redCardElementAway"></div>
         </div>
       </div>
       <p class="game-location">Local: {{ game.venue }}</p>
@@ -73,6 +75,7 @@ import { fetchPlayer } from "@/services/playerService";
 
 export default {
   name: "CardMatch",
+
   setup() {
     const gameHasGoals = ref(false);
 
@@ -199,7 +202,7 @@ export default {
   border-radius: 7px;
   font-size: 1.1em;
   font-weight: bold;
-  color: #fff; /*f39c12*/
+  color: #fff;
   padding: .5em;
   margin: 0 10px;
   text-align: center;
@@ -268,9 +271,21 @@ export default {
   justify-content: flex-start;
 }
 
-.red-card {
+.game-item-red-card, .game-item-goal {
   width: 20px;
   height: 20px;
+  margin: 0 .5em;
+}
+
+.game-item-goal{
+  color: #767676
+}
+
+.game-goal-home, .game-goal-away{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: .25em 0;
 }
 
 .game-time-minute {
