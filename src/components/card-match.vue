@@ -39,7 +39,7 @@
       </div>
       <div class="game-info">
         <pre>{{ player.value }}</pre>
-        <div class="game-info-header">
+        <div :class="gameInfoHeaderClass">
           <div v-if="player?.playerDetailsHome.length">
             <div v-for="(playerDetailHome, index) in player.playerDetailsHome" :key="index" class="game-goal-home">
               <font-awesome-icon :icon="['far', 'futbol']" class="game-item-goal"/>
@@ -141,6 +141,23 @@ export default {
 
     return { game, player, updateGame, updatePlayer, formatTime };
   },
+
+  computed: {
+    gameInfoHeaderClass() {
+      const hasHomeGoals = this.player?.playerDetailsHome?.length > 0;
+      const hasAwayGoals = this.player?.playerDetailsAway?.length > 0;
+
+      if (hasHomeGoals && hasAwayGoals) {
+        return 'game-info-header justify-between';
+      } else if (hasHomeGoals) {
+        return 'game-info-header justify-start';
+      } else if (hasAwayGoals) {
+        return 'game-info-header justify-end';
+      } else {
+        return 'game-info-header';
+      }
+    }
+  }
 };
 </script>
 
@@ -248,6 +265,17 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.game-info-header.justify-start {
+  justify-content: flex-start;
+}
+
+.game-info-header.justify-end {
+  justify-content: flex-end;
+}
+
+.game-info-header.justify-between {
   justify-content: space-between;
 }
 
