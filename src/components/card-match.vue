@@ -11,21 +11,25 @@
       </p>
       <div class="game-content">
         {{ game.symbolicHomeTeam }}
-        <img 
-          v-if="game.homeTeamImage" 
-          class="game-shield" 
-          :src="game.homeTeamImage" 
-          :alt="game.homeCompetitor?.name || 'Time da casa desconhecido'" 
-        />
+        <div class="game-team">
+          <img 
+            v-if="game.homeTeamImage" 
+            class="game-shield" 
+            :src="game.homeTeamImage" 
+            :alt="game.homeCompetitor?.name || 'Time da casa desconhecido'" 
+          />
+        </div>
         <h1 class="game-content-score">{{ game.homeScore }}</h1>
         <h1 class="game-content-score">X</h1>
         <h1 class="game-content-score">{{ game.awayScore }}</h1>
-        <img 
-          v-if="game.awayTeamImage" 
-          class="game-shield" 
-          :src="game.awayTeamImage" 
-          :alt="game.awayCompetitor?.name || 'Time visitante desconhecido'" 
-        />
+        <div class="game-team">
+          <img 
+            v-if="game.awayTeamImage" 
+            class="game-shield" 
+            :src="game.awayTeamImage" 
+            :alt="game.awayCompetitor?.name || 'Time visitante desconhecido'" 
+          />
+        </div>
         {{ game.symbolicAwayTeam }}
       </div>
       <div class="game-footer">
@@ -34,8 +38,23 @@
         <hr style="width: 30%; background-color: #ccc;" />
       </div>
       <div class="game-info">
-        <div class="game-red-card-left red-card" v-html="game.redCardElementHome"></div>
-        <div class="game-red-card-right red-card" v-html="game.redCardElementAway"></div>
+        <pre>{{ player.value }}</pre>
+        <div class="game-info-header">
+          <div v-if="player?.playerDetailsHome.length">
+            <div v-for="(playerDetailHome, index) in player.playerDetailsHome" :key="index">
+              {{ playerDetailHome.playerNameHome }} - {{ playerDetailHome.gameTimeHome }}'
+            </div>
+          </div>
+          <div v-if="player?.playerDetailsAway.length">
+            <div v-for="(playerDetailAway, index) in player.playerDetailsAway" :key="index">
+              {{ playerDetailAway.playerNameAway }} - {{ playerDetailAway.gameTimeAway }}'
+            </div>
+          </div>
+        </div>
+        <div class="game-info-footer">
+          <div class="game-item-left red-card" v-html="game.redCardElementHome"></div>
+          <div class="game-item-right red-card" v-html="game.redCardElementAway"></div>
+        </div>
       </div>
       <p class="game-location">Local: {{ game.venue }}</p>
     </div>
@@ -50,12 +69,32 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { fetchGame } from "@/services/gameService";
 import { rulesGame } from "@/services/rulesGame";
 import { formatTime } from "@/services/timeFormatter";
+import { fetchPlayer } from "@/services/playerService";
 
 export default {
   name: "CardMatch",
   setup() {
+    const gameHasGoals = ref(false);
+
+    const player = ref({ playerDetailsHome: [], playerDetailsAway: [] });
+    let intervalPlayer = null;
+
+    const updatePlayer = async () => {
+      try {
+        const fetchedPlayer = await fetchPlayer();
+        if (fetchedPlayer) {
+          player.value = { ...fetchedPlayer };
+        } else {
+          player.value = { playerDetailsHome: [], playerDetailsAway: [] };
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar jogadores:", error);
+        player.value = { playerDetailsHome: [], playerDetailsAway: [] };
+      }
+    };
+
     const game = ref(null);
-    let interval = null;
+    let intervalGame = null;
 
     const updateGame = async () => {
       try {
@@ -67,6 +106,13 @@ export default {
             homeTeamImage: `https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_3,d_Competitors:default1.png/v1/Competitors/${fetchedGame.idHome}`,
             awayTeamImage: `https://imagecache.365scores.com/image/upload/f_png,w_24,h_24,c_limit,q_auto:eco,dpr_3,d_Competitors:default1.png/v1/Competitors/${fetchedGame.idAway}`,
           };
+
+          if (fetchedGame.homeScore > 0 || fetchedGame.awayScore > 0) {
+            if (!gameHasGoals.value) {
+              gameHasGoals.value = true;
+              await updatePlayer();
+            }
+          }
         } else {
           game.value = null;
         }
@@ -76,16 +122,21 @@ export default {
       }
     };
 
-    onMounted(() => {
-      updateGame();
-      interval = setInterval(updateGame, 30000);
+    onMounted(async () => {
+      await updateGame();
+      intervalGame = setInterval(updateGame, 30000);
+
+      if (gameHasGoals.value) {
+        intervalPlayer = setInterval(updatePlayer, 30000);
+      }
     });
 
     onUnmounted(() => {
-      clearInterval(interval);
+      clearInterval(intervalGame);
+      clearInterval(intervalPlayer);
     });
 
-    return { game, updateGame, formatTime };
+    return { game, player, updateGame, updatePlayer, formatTime };
   },
 };
 </script>
@@ -128,11 +179,19 @@ export default {
   color: #b60000;
   padding: 1em;
 }
+.game-team{
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .game-shield {
-  width: 40px;
-  height: 40px;
-  margin-right: .5em;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
 }
 
 .game-status {
@@ -175,17 +234,35 @@ export default {
 .game-info {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
 }
 
-.game-red-card-right {
+.game-info-header {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-info-footer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-item-right {
   width: 20%;
   display: flex;
   justify-content: flex-end;
 }
 
-.game-red-card-left {
+.game-item-left {
   width: 20%;
   display: flex;
   justify-content: flex-start;
