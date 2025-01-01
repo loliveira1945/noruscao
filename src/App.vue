@@ -5,7 +5,13 @@
   </header>
   <main>
 
-    <card-match />
+    <transition name="fade-card-match">
+      <card-match v-if="moduleViewGame" />
+    </transition>
+
+    <transition name="fade-list-matches">
+      <list-matches v-if="!moduleViewGame" />
+    </transition>
 
     <hr class="division">
     
@@ -16,11 +22,17 @@
       <button-container @click="openURL('https://www.rruniformes.com.br/noroeste')">
           Adquira sua camisa
       </button-container>
+      <button-container @click="changeViewGame" v-if="moduleViewGame">
+          Ver Jogos
+      </button-container>
+      <button-container @click="changeViewGame" v-if="!moduleViewGame">
+          Jogo Atual
+      </button-container>
     </div>
     
     <hr class="division">
 
-    <p>Patrocinadores:</p>
+    <p class="sponsor-title">Patrocinadores:</p>
     <swiper
       :spaceBetween="30"
       :centeredSlides="true"
@@ -53,6 +65,8 @@
 <script>
 import cardMatch from './components/card-match.vue';
 import buttonContainer from './components/button-container.vue';
+import listMatches from './components/list-matches.vue';
+
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
@@ -65,6 +79,12 @@ import sponsors from '@/assets/sponsors.json';
 export default {
   name: 'App',
 
+  data(){
+    return {
+      moduleViewGame: true,
+    };
+  },
+
   setup() {
     return {
       sponsors,
@@ -75,12 +95,17 @@ export default {
   methods: {
     openURL(url, target = '_blank') {
       window.open(url, target);
+    },
+
+    changeViewGame() {
+      return this.moduleViewGame = !this.moduleViewGame
     }
   },
 
   components: {
     cardMatch,
     buttonContainer,
+    listMatches,
     Swiper,
     SwiperSlide,
   }
@@ -138,7 +163,25 @@ export default {
   border-radius: 50%;
 }
 
-.mySwiper {
-  margin: 1.2em 0;
+.sponsor-title {
+  font-weight: bold;
+  padding-bottom: 3vh;
 }
+
+.fade-card-match-enter-active, .fade-card-match-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-list-matches-enter-active, .fade-list-matches-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fade-list-matches-enter-from, .fade-list-matches-leave-to, .fade-card-match-enter-from, .fade-card-match-leave-to {
+  opacity: 0;
+}
+
+.fade-list-matches-enter-to, .fade-list-matches-leave-from, .fade-card-match-enter-to, .fade-card-match-leave-from {
+  opacity: 1;
+}
+
 </style>

@@ -76,6 +76,12 @@ import { fetchPlayer } from "@/services/playerService";
 export default {
   name: "CardMatch",
 
+  data() {
+    return {
+      games: [],
+    };
+  },
+
   setup() {
     const gameHasGoals = ref(false);
 
@@ -157,11 +163,11 @@ export default {
         return 'game-info-header';
       }
     }
-  }
+  },
 };
 </script>
 
-<style scoped>
+<style>
 .card-match {
   display: flex;
   flex-direction: column;
