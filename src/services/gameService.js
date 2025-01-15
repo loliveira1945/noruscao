@@ -8,7 +8,6 @@ export async function fetchGame() {
     const data = await response.json();
 
     if (data.games && data.games[0]) {
-      console.log(data.games)
       return processGame(data.games[0]);
     }
 
